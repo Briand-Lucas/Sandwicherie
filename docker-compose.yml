@@ -1,0 +1,51 @@
+version: '3.7'
+services: 
+  restservices:
+    build: 
+      context: .
+      dockerfile: restservice.dockerfile
+    ports:
+      - "8082:8082"
+    networks:
+      - isolated_nw2
+    volumes:
+      - /tmp
+    container_name: restservice
+    depends_on:
+      - pgbd
+
+	command:
+	    build: 
+	      context: .
+	      dockerfile: command.dockerfile
+	    ports:
+	      - "8083:8083"
+	    networks:
+	      - isolated_nw2
+	    volumes:
+	      - /tmp
+	    container_name: command
+	    depends_on:
+	      - pgbd
+  pgbd:
+    image: postgres
+    ports: 
+      - "5432:5432"
+    networks: 
+      - isolated_nw2
+    environment:
+    POSTGRES_DB: postgres
+    POSTGRES_USER: postgres
+    POSTGRES_PASSWORD: postgres
+  container_name: postgres
+
+
+
+
+
+networks:
+  isolated_nw2:
+    driver: bridge
+main:
+    allow-bean-definition-overriding: true
+

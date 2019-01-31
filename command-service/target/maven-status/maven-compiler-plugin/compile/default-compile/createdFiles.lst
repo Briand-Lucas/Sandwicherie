@@ -1,0 +1,7 @@
+org/lpro/commandservice/CommandServiceApplication.class
+org/lpro/commandservice/exception/NotFound.class
+org/lpro/commandservice/entity/SandwichBean.class
+org/lpro/commandservice/boundary/CommandRepresentation.class
+org/lpro/commandservice/entity/Command.class
+org/lpro/commandservice/boundary/CommandResource.class
+org/lpro/commandservice/boundary/CommandProxyService.class
