@@ -33,6 +33,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.cloud.netflix.ribbon.RibbonClient;
 import org.springframework.cloud.openfeign.FeignClient;
 
+
 @RestController
 @RequestMapping(value = "/commands", produces = MediaType.APPLICATION_JSON_VALUE)
 @ExposesResourceFor(Command.class)
