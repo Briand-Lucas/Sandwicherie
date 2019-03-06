@@ -20,7 +20,7 @@ public class Sandwich {
     @JsonIgnore
     private Category category;
     
-    Sandwich() {
+    public Sandwich() {
         // pour JPA
     }
 

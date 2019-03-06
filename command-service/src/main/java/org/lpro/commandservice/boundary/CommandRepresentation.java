@@ -77,7 +77,7 @@ public class CommandRepresentation {
     
     
     @GetMapping(value = "/{commandId}")
-    public ResponseEntity<?> getOne(@PathVariable("commandId") String id)
+    public ResponseEntity<?> getOneCommand(@PathVariable("commandId") String id)
             throws NotFound {
         return Optional.ofNullable(cr.findById(id))
                 .filter(Optional::isPresent)

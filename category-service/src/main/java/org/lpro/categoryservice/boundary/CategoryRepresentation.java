@@ -7,6 +7,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 import org.lpro.categoryservice.entity.Category;
+import org.lpro.categoryservice.entity.Sandwich;
 import org.lpro.categoryservice.exception.NotFound;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.hateoas.ExposesResourceFor;
@@ -81,42 +82,64 @@ public class CategoryRepresentation {
                 .orElseThrow(() -> new NotFound("Catégorie inexsitante"));
     }
 
-    @GetMapping("/{id}/sandwichs")
-    public ResponseEntity<?> getSandwichByCategoryId(@PathVariable("id") String id)
-            throws NotFound {
-        if (!cr.existsById(id)) {
-            throw new NotFound("Catégorie inexsitante");
-        }
-        return new ResponseEntity<>(sr.findByCategoryId(id), HttpStatus.OK);
-    }
+    
 
     @PostMapping
-    public ResponseEntity<?> postMethod(@RequestBody Category category) {
+    public ResponseEntity<?> postCategory(@RequestBody Category category) {
         category.setId(UUID.randomUUID().toString());
         Category saved = cr.save(category);
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.setLocation(linkTo(CategoryRepresentation.class).slash(saved.getId()).toUri());
-        return new ResponseEntity<>(null, responseHeaders, HttpStatus.CREATED);
+        return new ResponseEntity<>(category, responseHeaders, HttpStatus.CREATED);
     }
 
 
     @PutMapping(value = "/{categoryId}")
-    public ResponseEntity<?> putMethod(@PathVariable("categoryId") String id,
+    public ResponseEntity<?> putCategory(@PathVariable("categoryId") String id,
             @RequestBody Category categoryUpdated) throws NotFound {
         return cr.findById(id)
                 .map(category -> {
-                    category.setId(categoryUpdated.getId());
+                    category.setNom(categoryUpdated.getNom());
                     cr.save(category);
-                    return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+                    return new ResponseEntity<>(HttpStatus.OK);
                 }).orElseThrow(() -> new NotFound("Catégorie inexsitante"));
     }
 
     @DeleteMapping(value = "/{categoryId}")
-    public ResponseEntity<?> deleteMethod(@PathVariable("categoryId") String id) throws NotFound {
+    public ResponseEntity<?> deleteCategory(@PathVariable("categoryId") String id) throws NotFound {
         return cr.findById(id)
                 .map(category -> {
                     cr.delete(category);
-                    return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+                    return new ResponseEntity<>(HttpStatus.OK);
                 }).orElseThrow(() -> new NotFound("Catégorie inexsitante"));
     }
+    
+    
+    @GetMapping("/{categoryId}/sandwichs")
+    public ResponseEntity<?> getSandwichByCategoryId(@PathVariable("categoryId") String id)
+            throws NotFound {
+        
+        if (!cr.existsById(id)) {
+            throw new NotFound("Catégorie inexistante");
+        }
+        return new ResponseEntity<>(sr.findByCategoryId(id), HttpStatus.OK);
+    }
+    
+    
+    @PostMapping("/{categoryId}/sandwichs")
+    public ResponseEntity<?> CreateSandwichByCategoryId(@PathVariable("categoryId") String id, @RequestBody Sandwich sandwich){
+        
+        return cr.findById(id).map(category -> {
+                    sandwich.setId(UUID.randomUUID().toString());
+                    sandwich.setCategory(category);
+                    sr.save(sandwich);
+                    HttpHeaders responseHeaders = new HttpHeaders();
+                    responseHeaders.setLocation(linkTo(CategoryRepresentation.class).slash(id).slash("/sandwichs").slash(sandwich.getId()).toUri());
+                    return new ResponseEntity<>(sandwich, responseHeaders, HttpStatus.CREATED);  
+         }).orElseThrow ( () -> new NotFound("Catégorie inexistante"));
+      
+    }
+    
+    
+    
 }
