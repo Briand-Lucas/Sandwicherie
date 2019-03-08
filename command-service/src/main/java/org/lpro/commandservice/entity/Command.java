@@ -1,5 +1,6 @@
 package org.lpro.commandservice.entity;
 
+import java.sql.Date;
 import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -14,8 +15,8 @@ public class Command {
     private String id;
     private String mail;
     private String nom;
-    private String created_at;
-    private String livraison;
+    private Date created_at;
+    private Date livraison;
     private int status;
     private double montant;
    
@@ -24,11 +25,10 @@ public class Command {
         // necessaire pour JPA !!!!
     }
     
-    public Command (String nom, String c, String l, int s) {
+    public Command (String nom, Date c) {
         this.nom = nom;
         this.created_at = c;
-        this.livraison = l;
-        this.status = s;
+       
     }
 
     public String getId() {
@@ -47,21 +47,22 @@ public class Command {
         this.nom = nom;
     }
 
-    public String getCreated_at() {
+    public Date getCreated_at() {
         return created_at;
     }
 
-    public void setCreated_at(String created_at) {
+    public void setCreated_at(Date created_at) {
         this.created_at = created_at;
     }
 
-    public String getLivraison() {
+    public Date getLivraison() {
         return livraison;
     }
 
-    public void setLivraison(String livraison) {
+    public void setLivraison(Date livraison) {
         this.livraison = livraison;
     }
+
 
     public int getStatus() {
         return status;

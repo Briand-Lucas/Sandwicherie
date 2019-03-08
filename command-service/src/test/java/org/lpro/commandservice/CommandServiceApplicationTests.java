@@ -1,5 +1,7 @@
 package org.lpro.commandservice;
 
+import java.sql.Date;
+import java.util.Calendar;
 import java.util.UUID;
 import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.Before;
@@ -31,14 +33,15 @@ public class CommandServiceApplicationTests {
         
          @Test
         public void getOneCommandAPI(){
-            Command c1 = new Command();
+
+            Command c1 = new Command("Briand", new Date(Calendar.getInstance().getTime().getTime()));
             c1.setId(UUID.randomUUID().toString());
             cr.save(c1);
             
             ResponseEntity<String> response = restTemplate.getForEntity("/categories/" + c1.getId(), String.class);
             
             assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-            assertThat(response.getBody()).contains("Pain complet");
+            assertThat(response.getBody()).contains("Briand");
         }
         
 
