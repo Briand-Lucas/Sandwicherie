@@ -19,15 +19,19 @@ public class Command {
     private Date livraison;
     private int status;
     private double montant;
+    private SandwichBean[] listeSandwichs;
    
     
     Command() {
         // necessaire pour JPA !!!!
     }
     
-    public Command (String nom, Date c) {
+    public Command (String nom, String m, Date c, Date l, SandwichBean[] s) {
         this.nom = nom;
+        this.mail = m;
         this.created_at = c;
+        this.livraison = l;
+        this.listeSandwichs = s;
        
     }
 
@@ -87,6 +91,16 @@ public class Command {
     public void setMontant(double montant) {
         this.montant = montant;
     }
+
+    public SandwichBean[] getListeSandwichs() {
+        return listeSandwichs;
+    }
+
+    public void setListeSandwichs(SandwichBean[] listeSandwichs) {
+        this.listeSandwichs = listeSandwichs;
+    }
+    
+    
     
     
     
